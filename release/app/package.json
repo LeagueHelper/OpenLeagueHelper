@@ -1,0 +1,17 @@
+{
+    "name": "openleaguehelper",
+    "version": "1.0.0",
+    "description": "A league of legends helper and automation tool",
+    "license": "MIT",
+    "author": {
+      "name": "Renzo Beux and Agustin Tornaria",
+      "email": "renzobeux@gmail.com"
+  },
+    "main": "./dist/main/main.js",
+    "scripts": {
+        "electron-rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
+        "postinstall": "npm run electron-rebuild && npm run link-modules",
+        "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts"
+    },
+    "dependencies": {}
+}
