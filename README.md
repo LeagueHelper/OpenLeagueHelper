@@ -21,3 +21,7 @@ League Helper is a software built by two software programmer looking to automate
 
 REMEMBER TO ADD CERTIFICATE INSIDE LEAGUE-CONNECT MODULE
 BY HAND, I MEAN HARDCODING IT AS IN authentication.js (LEAGUECONNECT MODED FILE)
+
+# Authors
+Renzo Beux
+Agustin Tornaría
