@@ -12,12 +12,10 @@ import { HashRouter, Route, Routes } from 'react-router-dom';
 import { ChampionsMessage } from 'api/MessageTypes/InitialMessage';
 import { AutopickPreferences } from 'api/entities/AutopickPreferences';
 import { Summoner } from 'api/entities/Summoner';
-import Desktop from './sections/Desktop';
 import {
     AUTOACCEPT_STATE,
     AUTOPICK_PREFERENCES,
     AUTOPICK_STATE,
-    GET_AUTO_START,
     RAWCHAPIONS,
     SUMMONER,
 } from '../common/constants';
@@ -41,8 +39,6 @@ function App() {
         const autoPickIsTurnedOn = window.electron.store.get(AUTOPICK_STATE);
         const autoAcceptIsTurnedOn =
             window.electron.store.get(AUTOACCEPT_STATE);
-        console.log(autoPickIsTurnedOn);
-        console.log(autoAcceptIsTurnedOn);
         const windowsStartup = window.electron.ipcRenderer.sendMessage(
             'get-auto-start',
             []

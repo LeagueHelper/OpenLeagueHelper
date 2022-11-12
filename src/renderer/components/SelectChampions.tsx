@@ -1,14 +1,18 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { Card, Button, MenuItem } from '@blueprintjs/core';
 import { ItemPredicate, ItemRenderer, Select } from '@blueprintjs/select';
-// import { ipcRenderer } from 'electron';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'renderer/state/hooks';
 import Champion from 'api/entities/Champion';
 import Role from 'api/entities/Role';
 import { setAutopickPreferences } from 'renderer/state/slices/preferencesSlice';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import {
+    DragDropContext,
+    Droppable,
+    Draggable,
+    DropResult,
+} from 'react-beautiful-dnd';
 import ChampCard from './ChampCard/ChampCard';
 
 export interface SelectChampionsPropTypes {
@@ -36,11 +40,7 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
     );
     // save an item
     const addItem = (item: Champion) => {
-        console.log(autopickPreferences);
-        console.log(useCase);
-        console.log(auxState);
         const aux = Array.from(auxState);
-        console.log(aux);
         if (aux.some((id: number) => id === item.id)) {
             return;
         }
@@ -53,7 +53,6 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
                 [useCase]: aux,
             },
         };
-        console.log(toSave);
         dispatch(setAutopickPreferences(toSave));
     };
 
@@ -68,7 +67,6 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
                 [useCase]: aux,
             },
         };
-        console.log(toSave);
         dispatch(setAutopickPreferences(toSave));
     };
 
@@ -96,15 +94,18 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
         return champ.name.toLowerCase().indexOf(query.toLowerCase()) >= 0;
     };
 
-    const reorder = (list, startIndex, endIndex) => {
+    const reorder = (list: number[], startIndex: number, endIndex: number) => {
         const result = Array.from(list);
         const [removed] = result.splice(startIndex, 1);
         result.splice(endIndex, 0, removed);
 
-        return result;
+        return result as number[];
     };
 
-    const getItemStyle = (isDragging, draggableStyle) => ({
+    const getItemStyle = (
+        isDragging: boolean,
+        draggableStyle: Record<string, string | number> | undefined
+    ) => ({
         // some basic styles to make the items look a bit nicer
         userSelect: 'none',
         padding: grid * 2,
@@ -114,12 +115,12 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
         // styles we need to apply on draggables
         ...draggableStyle,
     });
-    const getListStyle = (isDraggingOver) => ({
+    const getListStyle = (isDraggingOver: boolean) => ({
         background: isDraggingOver ? 'lightblue' : 'lightgrey',
         padding: grid,
     });
 
-    function onDragEnd(result) {
+    function onDragEnd(result: DropResult) {
         // dropped outside the list
         if (!result.destination) {
             return;
@@ -131,14 +132,9 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
             result.destination.index
         );
         setAuxState(items);
-
-        // this.setState({
-        //     items,
-        // });
     }
 
     const ChampSelect = Select.ofType<Champion>();
-    const navigate = useNavigate();
     return (
         <div className="champSelector">
             <h1>{title}</h1>
@@ -172,15 +168,15 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
                                             draggableId={champ.id.toString()}
                                             index={index}
                                         >
-                                            {(provided, snapshot) => (
+                                            {(providedI, snapshotI) => (
                                                 <div
-                                                    ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
+                                                    ref={providedI.innerRef}
+                                                    {...providedI.draggableProps}
+                                                    {...providedI.dragHandleProps}
                                                 >
                                                     <ChampCard
                                                         style={getItemStyle(
-                                                            snapshot.isDragging,
+                                                            snapshotI.isDragging,
                                                             undefined
                                                         )}
                                                         id={id}
