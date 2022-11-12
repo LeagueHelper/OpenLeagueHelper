@@ -13,7 +13,6 @@ import { ChampionsMessage } from 'api/MessageTypes/InitialMessage';
 import { AutopickPreferences } from 'api/entities/AutopickPreferences';
 import { Summoner } from 'api/entities/Summoner';
 import Desktop from './sections/Desktop';
-import Bans from './sections/Bans';
 import {
     AUTOACCEPT_STATE,
     AUTOPICK_PREFERENCES,
@@ -29,7 +28,7 @@ import {
     setAutopickPreferences,
     setAutoStartOnWindowsStartup,
 } from './state/slices/preferencesSlice';
-import Picks from './sections/Picks';
+import BansAndPicks from './sections/BansAndPicks';
 import { setChampions, setUserInfo } from './state/slices/dataSlice';
 import { setConnected } from './state/slices/statusSlice';
 
@@ -77,9 +76,7 @@ function App() {
     return (
         <HashRouter>
             <Routes>
-                <Route path="/" element={<Desktop />} />
-                <Route path="/bans" element={<Bans />} />
-                <Route path="/picks" element={<Picks />} />
+                <Route path="/" element={<BansAndPicks />} />
             </Routes>
         </HashRouter>
     );

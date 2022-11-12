@@ -3,21 +3,13 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Divider, Button } from '@blueprintjs/core';
 import SelectChampions from '../components/SelectChampions';
 
-const Picks = () => {
+const BansAndPicks = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const roleVar = searchParams.get('role') as Role;
+    const roleVar = Role.Bot;
     const navigate = useNavigate();
 
     return (
         <>
-            <Button
-                className="backButton"
-                onClick={() => {
-                    navigate('/', { replace: true });
-                }}
-            >
-                Back
-            </Button>
             <div className="roleSetter">
                 <SelectChampions title="Picks" role={roleVar} useCase="picks" />
                 <Divider />
@@ -27,4 +19,4 @@ const Picks = () => {
     );
 };
 
-export default Picks;
+export default BansAndPicks;
