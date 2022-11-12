@@ -1,7 +1,7 @@
 import Role from 'api/entities/Role';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Divider, Button } from '@blueprintjs/core';
-import SelectChampions from '../components/SelectChampions';
+import SelectChampions from '../components/SelectChampions/SelectChampions';
 
 const BansAndPicks = () => {
     const [searchParams, setSearchParams] = useSearchParams();

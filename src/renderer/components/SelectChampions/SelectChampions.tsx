@@ -1,10 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { Card, Button, MenuItem } from '@blueprintjs/core';
-import { ItemPredicate, ItemRenderer, Select } from '@blueprintjs/select';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'renderer/state/hooks';
-import Champion from 'api/entities/Champion';
 import Role from 'api/entities/Role';
 import { setAutopickPreferences } from 'renderer/state/slices/preferencesSlice';
 import {
@@ -13,7 +9,10 @@ import {
     Draggable,
     DropResult,
 } from 'react-beautiful-dnd';
-import ChampCard from './ChampCard/ChampCard';
+import Champion from 'api/entities/Champion';
+import ChampCard from '../ChampCard/ChampCard';
+import SelectCard from './SelectCard';
+import Styles from './SelectChampions.module.scss';
 
 export interface SelectChampionsPropTypes {
     title: string;
@@ -26,9 +25,7 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
     const dispatch = useAppDispatch();
 
     const champions = useAppSelector((state) => state.data.champions);
-
     const ownedChampions = useAppSelector((state) => state.data.ownedChampions);
-
     const autopickPreferences = useAppSelector(
         (state) => state.preferences.autopickPreferences
     );
@@ -38,8 +35,9 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
     const [auxState, setAuxState] = useState(
         autopickPreferences[role][useCase]
     );
+
     // save an item
-    const addItem = (item: Champion) => {
+    const addChampion = (item: Champion) => {
         const aux = Array.from(auxState);
         if (aux.some((id: number) => id === item.id)) {
             return;
@@ -56,7 +54,7 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
         dispatch(setAutopickPreferences(toSave));
     };
 
-    const handleDelete = (id: number) => {
+    const deleteChampion = (id: number) => {
         let aux = Array.from(auxState);
         aux = aux.filter((champId) => champId !== id);
         setAuxState(aux);
@@ -69,30 +67,7 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
         };
         dispatch(setAutopickPreferences(toSave));
     };
-
-    useEffect(() => {});
-
-    const renderChamp: ItemRenderer<Champion> = (
-        champ,
-        { handleClick, modifiers, query }
-    ) => {
-        if (!modifiers.matchesPredicate) {
-            return null;
-        }
-        return (
-            <MenuItem
-                active={modifiers.active}
-                disabled={modifiers.disabled}
-                label={champ.name}
-                key={champ.id}
-                onClick={handleClick}
-            />
-        );
-    };
     const grid = 8;
-    const filterChamp: ItemPredicate<Champion> = (query, champ) => {
-        return champ.name.toLowerCase().indexOf(query.toLowerCase()) >= 0;
-    };
 
     const reorder = (list: number[], startIndex: number, endIndex: number) => {
         const result = Array.from(list);
@@ -108,7 +83,6 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
     ) => ({
         // some basic styles to make the items look a bit nicer
         userSelect: 'none',
-        padding: grid * 2,
         margin: `0 0 ${grid}px 0`,
         // change background colour if dragging
         background: isDragging ? 'lightgreen' : 'white',
@@ -134,21 +108,15 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
         setAuxState(items);
     }
 
-    const ChampSelect = Select.ofType<Champion>();
     return (
-        <div className="champSelector">
+        <div className={Styles.champSelector}>
             <h1>{title}</h1>
-            <Card>
-                <h4>{role}</h4>
-                <ChampSelect
-                    itemPredicate={filterChamp}
-                    items={availableChampions}
-                    itemRenderer={renderChamp}
-                    onItemSelect={addItem}
-                >
-                    <Button>Select Champ</Button>
-                </ChampSelect>
-            </Card>
+
+            <SelectCard
+                availableChampions={availableChampions}
+                addChampion={addChampion}
+            />
+
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided, snapshot) => (
@@ -181,7 +149,9 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
                                                         )}
                                                         id={id}
                                                         champ={champ}
-                                                        onDelete={handleDelete}
+                                                        onDelete={
+                                                            deleteChampion
+                                                        }
                                                     />
                                                 </div>
                                             )}
