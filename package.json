@@ -12,7 +12,7 @@
         "build:renderer": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.prod.ts",
         "postinstall": "ts-node .erb/scripts/check-native-dep.js && electron-builder install-app-deps && cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.ts",
         "lint": "cross-env NODE_ENV=development eslint . --ext .js,.jsx,.ts,.tsx",
-        "package": "ts-node ./.erb/scripts/clean.js dist && npm run build && cross-env GH_TOKEN=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 electron-builder build --publish always",
+        "package": "ts-node ./.erb/scripts/clean.js dist && npm run build && cross-env GH_TOKEN=<PUTTOKENHERE> electron-builder build --publish never",
         "prepare": "husky install",
         "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
         "start": "ts-node ./.erb/scripts/check-port-in-use.js && npm run start:renderer",
@@ -89,7 +89,6 @@
         "@testing-library/jest-dom": "^5.16.4",
         "@testing-library/react": "^13.2.0",
         "@testing-library/user-event": "^13.5.0",
-        "@types/react-beautiful-dnd": "^13.1.2",
         "btoa": "^1.2.1",
         "chokidar": "^3.3.1",
         "cross-env": "^7.0.3",
@@ -125,6 +124,7 @@
         "@types/jest": "^27.5.1",
         "@types/node": "17.0.33",
         "@types/react": "^18.0.9",
+        "@types/react-beautiful-dnd": "^13.1.2",
         "@types/react-dom": "^18.0.4",
         "@types/react-redux": "^7.1.24",
         "@types/react-test-renderer": "^18.0.0",
@@ -245,8 +245,8 @@
         ],
         "publish": {
             "provider": "github",
-            "owner": "RenzoBeux",
-            "repo": "league-helper"
+            "owner": "LeagueHelper",
+            "repo": "OpenLeagueHelper"
         }
     },
     "devEngines": {

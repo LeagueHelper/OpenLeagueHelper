@@ -197,6 +197,4 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
     );
 };
 
-// SelectChampions.propTypes = { title: string };
-
 export default SelectChampions;

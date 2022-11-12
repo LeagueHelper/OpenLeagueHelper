@@ -58,7 +58,22 @@ import LoLApi from '../api/LolApi';
 import { resolveHtmlPath } from './util';
 import Role from '../api/entities/Role';
 
+const gotTheLock = app.requestSingleInstanceLock();
 let tray: Tray | null = null;
+
+let mainWindow: BrowserWindow | null = null;
+
+if (!gotTheLock) {
+    app.quit();
+} else {
+    app.on('second-instance', () => {
+        // Someone tried to run a second instance, we should focus our window.
+        if (mainWindow) {
+            if (mainWindow.isMinimized()) mainWindow.restore();
+            mainWindow.focus();
+        }
+    });
+}
 
 const streamPipeline = promisify(pipeline);
 const autoLauncher = new AutoLaunch({
@@ -97,8 +112,6 @@ function sleep(ms: number) {
 let API: LoLApi;
 
 const store = new Store();
-
-let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
     const sourceMapSupport = require('source-map-support');
