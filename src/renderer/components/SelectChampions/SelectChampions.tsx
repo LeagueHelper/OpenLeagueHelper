@@ -13,6 +13,7 @@ import Champion from 'api/entities/Champion';
 import ChampCard from '../ChampCard/ChampCard';
 import SelectCard from './SelectCard';
 import Styles from './SelectChampions.module.scss';
+import DragAndDropList, { ItemToRender } from '../DragAndDrop/DragAndDropList';
 
 export interface SelectChampionsPropTypes {
     title: string;
@@ -33,66 +34,62 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
     const availableChampions = useCase === 'bans' ? champions : ownedChampions;
 
     const [auxState, setAuxState] = useState(
-        autopickPreferences[role][useCase]
+        autopickPreferences[role][useCase].map((champId) => {
+            return {
+                id: champId.toString(),
+                content: champions.find((champ) => champ.id === champId),
+                // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                onDelete: deleteChampion,
+            } as ItemToRender;
+        })
     );
 
     // save an item
     const addChampion = (item: Champion) => {
         const aux = Array.from(auxState);
-        if (aux.some((id: number) => id === item.id)) {
+        if (aux.some((champ) => champ.id === item.id.toString())) {
             return;
         }
-        aux.push(item.id);
+        aux.push({
+            id: item.id.toString(),
+            content: item,
+        });
         setAuxState(aux);
         const toSave = {
             ...autopickPreferences,
             [role]: {
                 ...autopickPreferences[role],
-                [useCase]: aux,
+                [useCase]: aux.map((champ) => parseInt(champ.id, 10)),
             },
         };
         dispatch(setAutopickPreferences(toSave));
     };
 
-    const deleteChampion = (id: number) => {
-        let aux = Array.from(auxState);
-        aux = aux.filter((champId) => champId !== id);
+    function deleteChampion(id: number) {
+        let aux = auxState;
+        aux = aux.filter((champId) => champId.id !== id.toString());
         setAuxState(aux);
         const toSave = {
             ...autopickPreferences,
             [role]: {
                 ...autopickPreferences[role],
-                [useCase]: aux,
+                [useCase]: aux.map((champ) => parseInt(champ.id, 10)),
             },
         };
         dispatch(setAutopickPreferences(toSave));
-    };
-    const grid = 8;
+    }
 
-    const reorder = (list: number[], startIndex: number, endIndex: number) => {
-        const result = Array.from(list);
+    const reorder = (
+        list: ItemToRender[],
+        startIndex: number,
+        endIndex: number
+    ) => {
+        const result = list;
         const [removed] = result.splice(startIndex, 1);
         result.splice(endIndex, 0, removed);
 
-        return result as number[];
+        return result as ItemToRender[];
     };
-
-    const getItemStyle = (
-        isDragging: boolean,
-        draggableStyle: Record<string, string | number> | undefined
-    ) => ({
-        // some basic styles to make the items look a bit nicer
-        userSelect: 'none',
-        margin: `0 0 ${grid}px 0`,
-        // change background colour if dragging
-        background: isDragging ? 'lightgreen' : 'white',
-        // styles we need to apply on draggables
-        ...draggableStyle,
-    });
-    const getListStyle = (isDraggingOver: boolean) => ({
-        background: isDraggingOver ? 'lightblue' : 'lightgrey',
-        padding: grid,
-    });
 
     function onDragEnd(result: DropResult) {
         // dropped outside the list
@@ -117,52 +114,12 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
                 addChampion={addChampion}
             />
 
-            <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId="droppable">
-                    {(provided, snapshot) => (
-                        <div
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}
-                        >
-                            {auxState &&
-                                auxState.map((id, index) => {
-                                    const champ = champions.find(
-                                        (champion) => champion.id === id
-                                    );
-                                    return (
-                                        <Draggable
-                                            key={champ.id.toString()}
-                                            draggableId={champ.id.toString()}
-                                            index={index}
-                                        >
-                                            {(providedI, snapshotI) => (
-                                                <div
-                                                    ref={providedI.innerRef}
-                                                    {...providedI.draggableProps}
-                                                    {...providedI.dragHandleProps}
-                                                >
-                                                    <ChampCard
-                                                        style={getItemStyle(
-                                                            snapshotI.isDragging,
-                                                            undefined
-                                                        )}
-                                                        id={id}
-                                                        champ={champ}
-                                                        onDelete={
-                                                            deleteChampion
-                                                        }
-                                                    />
-                                                </div>
-                                            )}
-                                        </Draggable>
-                                    );
-                                })}
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-            </DragDropContext>
+            <DragAndDropList
+                items={auxState}
+                Component={ChampCard}
+                onDragEnd={onDragEnd}
+                onDelete={deleteChampion}
+            />
         </div>
     );
 };
