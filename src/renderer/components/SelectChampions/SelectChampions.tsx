@@ -3,12 +3,7 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'renderer/state/hooks';
 import Role from 'api/entities/Role';
 import { setAutopickPreferences } from 'renderer/state/slices/preferencesSlice';
-import {
-    DragDropContext,
-    Droppable,
-    Draggable,
-    DropResult,
-} from 'react-beautiful-dnd';
+import { DropResult } from 'react-beautiful-dnd';
 import Champion from 'api/entities/Champion';
 import ChampCard from '../ChampCard/ChampCard';
 import SelectCard from './SelectCard';
