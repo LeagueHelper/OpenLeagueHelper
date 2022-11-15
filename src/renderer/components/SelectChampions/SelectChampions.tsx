@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'renderer/state/hooks';
 import Role from 'api/entities/Role';
 import { setAutopickPreferences } from 'renderer/state/slices/preferencesSlice';
-import { DropResult } from 'react-beautiful-dnd';
 import Champion from 'api/entities/Champion';
 import ChampCard from '../ChampCard/ChampCard';
 import SelectCard from './SelectCard';
@@ -74,32 +73,6 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
         dispatch(setAutopickPreferences(toSave));
     }
 
-    const reorder = (
-        list: ItemToRender[],
-        startIndex: number,
-        endIndex: number
-    ) => {
-        const result = list;
-        const [removed] = result.splice(startIndex, 1);
-        result.splice(endIndex, 0, removed);
-
-        return result as ItemToRender[];
-    };
-
-    function onDragEnd(result: DropResult) {
-        // dropped outside the list
-        if (!result.destination) {
-            return;
-        }
-
-        const items = reorder(
-            auxState,
-            result.source.index,
-            result.destination.index
-        );
-        setAuxState(items);
-    }
-
     return (
         <div className={Styles.champSelector}>
             <h1>{title}</h1>
@@ -112,7 +85,7 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
             <DragAndDropList
                 items={auxState}
                 Component={ChampCard}
-                onDragEnd={onDragEnd}
+                setItems={setAuxState}
                 onDelete={deleteChampion}
             />
         </div>

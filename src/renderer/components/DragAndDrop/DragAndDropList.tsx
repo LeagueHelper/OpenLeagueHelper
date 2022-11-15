@@ -7,10 +7,9 @@ import {
 } from 'react-beautiful-dnd';
 
 export interface DragAndDropListProps {
-    onDragEnd: (result: DropResult) => void;
     onDelete: (id: number) => void;
-
     items: ItemToRender[];
+    setItems: (items: ItemToRender[]) => void;
     Component: React.FC<{
         onDelete: (id: number) => void;
         style: Record<string, any>;
@@ -25,7 +24,33 @@ export interface ItemToRender {
 }
 
 const DragAndDropList = (props: DragAndDropListProps) => {
-    const { onDragEnd, onDelete, items, Component } = props;
+    const { onDelete, items, setItems, Component } = props;
+
+    const reorder = (
+        list: ItemToRender[],
+        startIndex: number,
+        endIndex: number
+    ) => {
+        const result = list;
+        const [removed] = result.splice(startIndex, 1);
+        result.splice(endIndex, 0, removed);
+
+        return result as ItemToRender[];
+    };
+
+    function onDragEnd(result: DropResult) {
+        // dropped outside the list
+        if (!result.destination) {
+            return;
+        }
+
+        const aux = reorder(
+            items,
+            result.source.index,
+            result.destination.index
+        );
+        setItems(items);
+    }
 
     const getListStyle = (isDraggingOver: boolean) => ({
         background: isDraggingOver ? 'lightblue' : 'lightgrey',
