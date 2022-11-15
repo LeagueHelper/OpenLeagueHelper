@@ -15,7 +15,42 @@ const Settings = () => {
                 isOpen={isOpen}
                 toggle={() => setIsOpen((prev) => !prev)}
                 title="Settings"
-                content={<div>Settings</div>}
+                content={
+                    <div>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                        <p>Settings</p>
+                    </div>
+                }
                 footer={null}
             />
         </>
