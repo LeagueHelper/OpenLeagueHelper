@@ -1,9 +1,25 @@
+import { Switch } from '@blueprintjs/core';
 import { useState } from 'react';
-import { useAppDispatch } from 'renderer/state/hooks';
+import { useAppDispatch, useAppSelector } from 'renderer/state/hooks';
+import {
+    setAutoAcceptIsTurnedOn,
+    setAutoPickIsTurnedOn,
+    setAutoStartOnWindowsStartup,
+} from 'renderer/state/slices/preferencesSlice';
 import Modal from '../Modal/Modal';
 
 const Settings = () => {
-    // This is a modal which is used to display the settings
+    const autoAcceptIsTurnedOn = useAppSelector(
+        (state) => state.preferences.autoAcceptIsTurnedOn
+    );
+    const autoPickIsTurnedOn = useAppSelector(
+        (state) => state.preferences.autoPickIsTurnedOn
+    );
+    const autoStartOnWindowsStartup = useAppSelector(
+        (state) => state.preferences.autoStartOnWindowsStartup
+    );
+
+    const dispatch = useAppDispatch();
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -17,38 +33,54 @@ const Settings = () => {
                 title="Settings"
                 content={
                     <div>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
-                        <p>Settings</p>
+                        <Switch
+                            large
+                            className="switch"
+                            label="Start on windows startup"
+                            alignIndicator="right"
+                            checked={autoStartOnWindowsStartup}
+                            onChange={() => {
+                                dispatch(
+                                    setAutoStartOnWindowsStartup(
+                                        !autoStartOnWindowsStartup
+                                    )
+                                );
+                            }}
+                        />
+                        <Switch
+                            large
+                            alignIndicator="right"
+                            className="switch"
+                            checked={autoPickIsTurnedOn}
+                            label={
+                                autoPickIsTurnedOn
+                                    ? 'Auto-Pick On'
+                                    : 'Auto-Pick Off'
+                            }
+                            onChange={() => {
+                                dispatch(
+                                    setAutoPickIsTurnedOn(!autoPickIsTurnedOn)
+                                );
+                            }}
+                        />
+                        <Switch
+                            large
+                            alignIndicator="right"
+                            className="switch"
+                            checked={autoAcceptIsTurnedOn}
+                            label={
+                                autoAcceptIsTurnedOn
+                                    ? 'Auto-Accept On'
+                                    : 'Auto-Accept Off'
+                            }
+                            onChange={() => {
+                                dispatch(
+                                    setAutoAcceptIsTurnedOn(
+                                        !autoAcceptIsTurnedOn
+                                    )
+                                );
+                            }}
+                        />
                     </div>
                 }
                 footer={null}
