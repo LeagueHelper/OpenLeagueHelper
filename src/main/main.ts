@@ -393,6 +393,7 @@ const createWindow = async () => {
         height: 720,
         minHeight: 720,
         minWidth: 1280,
+        frame: false,
         icon: getAssetPath('icon.png'),
         webPreferences: {
             preload: app.isPackaged
@@ -618,4 +619,14 @@ ipcMain.on(GET_AUTO_START, async (_event) => {
     log.info('------------------------------>', autoStart);
     log.info('Auto start:', autoStart);
     mainWindow?.webContents.send('auto-start', autoStart);
+});
+
+ipcMain.on('app-minimize', () => {
+    mainWindow?.minimize();
+});
+ipcMain.on('app-maximize', () => {
+    mainWindow?.maximize();
+});
+ipcMain.on('app-close', () => {
+    mainWindow?.close();
 });

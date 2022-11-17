@@ -15,6 +15,17 @@ contextBridge.exposeInMainWorld('electron', {
         },
         // Other method you want to add like has(), reset(), etc.
     },
+    app: {
+        minimize() {
+            ipcRenderer.send('app-minimize');
+        },
+        maximize() {
+            ipcRenderer.send('app-maximize');
+        },
+        close() {
+            ipcRenderer.send('app-close');
+        },
+    },
     ipcRenderer: {
         sendMessage(channel: Channels, args: unknown[]) {
             ipcRenderer.send(channel, args);

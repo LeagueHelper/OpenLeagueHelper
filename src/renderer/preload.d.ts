@@ -9,6 +9,11 @@ declare global {
                 clear: () => void;
                 // any other methods you've defined...
             };
+            app: {
+                minimize: () => void;
+                maximize: () => void;
+                close: () => void;
+            };
             ipcRenderer: {
                 sendMessage(channel: Channels, args: unknown[]): void;
                 on(

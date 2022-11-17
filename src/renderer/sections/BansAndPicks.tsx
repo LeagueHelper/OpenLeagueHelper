@@ -2,6 +2,7 @@ import Role from 'api/entities/Role';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Divider, Button } from '@blueprintjs/core';
 import Settings from 'renderer/components/Settings/Settings';
+import AppFrame from 'renderer/AppFrame/AppFrame';
 import SelectChampions from '../components/SelectChampions/SelectChampions';
 
 const BansAndPicks = () => {
@@ -11,7 +12,7 @@ const BansAndPicks = () => {
 
     return (
         <>
-            <Settings />
+            <AppFrame />
             <div className="roleSetter">
                 <SelectChampions title="Picks" role={roleVar} useCase="picks" />
                 <Divider />

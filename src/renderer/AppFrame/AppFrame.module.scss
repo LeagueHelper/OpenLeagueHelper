@@ -1,0 +1,27 @@
+.AppFrame {
+    display: flex;
+    flex-direction: row;
+    // align items to right
+    justify-content: flex-end;
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+    background-color: #f6f7f9;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
+    > .AppFrame_button {
+        -webkit-app-region: no-drag;
+    }
+    > .AppFrame_window_button {
+        -webkit-app-region: no-drag;
+        // no shadows
+        box-shadow: none;
+        -webkit-box-shadow: none;
+    }
+    > .AppFrame_settings {
+        // // align to left
+        margin-right: auto;
+        
+    }
+}

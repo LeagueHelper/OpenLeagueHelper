@@ -8,7 +8,12 @@ import {
 } from 'renderer/state/slices/preferencesSlice';
 import Modal from '../Modal/Modal';
 
-const Settings = () => {
+interface SettingsProps {
+    isOpen: boolean;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Settings = ({ isOpen, setIsOpen }: SettingsProps) => {
     const autoAcceptIsTurnedOn = useAppSelector(
         (state) => state.preferences.autoAcceptIsTurnedOn
     );
@@ -20,13 +25,8 @@ const Settings = () => {
     );
 
     const dispatch = useAppDispatch();
-    const [isOpen, setIsOpen] = useState(false);
-
     return (
         <>
-            <button type="button" onClick={() => setIsOpen(true)}>
-                Open Modal
-            </button>
             <Modal
                 isOpen={isOpen}
                 toggle={() => setIsOpen((prev) => !prev)}
