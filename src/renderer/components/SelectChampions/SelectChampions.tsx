@@ -1,11 +1,11 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'renderer/state/hooks';
 import Role from 'api/entities/Role';
 import { setAutopickPreferences } from 'renderer/state/slices/preferencesSlice';
 import Champion from 'api/entities/Champion';
 import ChampCard from '../ChampCard/ChampCard';
-import SelectCard from './SelectCard';
+import AddChamp from './SelectCard';
 import Styles from './SelectChampions.module.scss';
 import DragAndDropList, { ItemToRender } from '../DragAndDrop/DragAndDropList';
 
@@ -27,16 +27,7 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
 
     const availableChampions = useCase === 'bans' ? champions : ownedChampions;
 
-    const [auxState, setAuxState] = useState(
-        autopickPreferences[role][useCase].map((champId) => {
-            return {
-                id: champId.toString(),
-                content: champions.find((champ) => champ.id === champId),
-                // eslint-disable-next-line @typescript-eslint/no-use-before-define
-                onDelete: deleteChampion,
-            } as ItemToRender;
-        })
-    );
+    const [auxState, setAuxState] = useState<ItemToRender[]>([]);
 
     // save an item
     const addChampion = (item: Champion) => {
@@ -73,21 +64,34 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
         dispatch(setAutopickPreferences(toSave));
     }
 
+    useEffect(() => {
+        const aux = autopickPreferences[role][useCase].map((champId) => {
+            return {
+                id: champId.toString(),
+                content: champions.find((champ) => champ.id === champId),
+                // eslint-disable-next-line @typescript-eslint/no-use-before-define
+            } as ItemToRender;
+        });
+        setAuxState(aux);
+    }, [autopickPreferences, champions, role, useCase]);
     return (
         <div className={Styles.champSelector}>
-            <h1>{title}</h1>
-
-            <SelectCard
-                availableChampions={availableChampions}
-                addChampion={addChampion}
-            />
-
-            <DragAndDropList
-                items={auxState}
-                Component={ChampCard}
-                setItems={setAuxState}
-                onDelete={deleteChampion}
-            />
+            <div className={Styles.title}>
+                <h1>{title}</h1>
+                <AddChamp
+                    text={useCase === 'bans' ? 'Add Ban' : 'Add Pick'}
+                    availableChampions={availableChampions}
+                    addChampion={addChampion}
+                />
+            </div>
+            <div className={Styles.champList}>
+                <DragAndDropList
+                    items={auxState}
+                    Component={ChampCard}
+                    setItems={setAuxState}
+                    onDelete={deleteChampion}
+                />
+            </div>
         </div>
     );
 };

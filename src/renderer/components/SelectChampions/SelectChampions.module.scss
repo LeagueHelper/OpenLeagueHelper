@@ -1,4 +1,23 @@
 .champSelector {
     display: flex;
     flex-direction: column;
+    width: 100%;
+}
+
+.title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding: 0 1rem;
+    justify-content: space-between;
+}
+
+.champList {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    padding: 0 1rem;
 }

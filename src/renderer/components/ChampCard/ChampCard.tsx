@@ -9,10 +9,12 @@ export interface ChampCardProps {
     id: number | string;
     element: Champion;
     onDelete: (id: number) => void;
+    listIndex: number | undefined;
 }
 
 const ChampCard: React.FC<ChampCardProps> = (props: ChampCardProps) => {
-    const { style, id, element, onDelete } = props;
+    const { style, id, element, onDelete, listIndex } = props;
+    const num = listIndex !== undefined ? listIndex + 1 : 0;
     const champ = element;
     if (champ) {
         return (
@@ -21,6 +23,7 @@ const ChampCard: React.FC<ChampCardProps> = (props: ChampCardProps) => {
                     <img src={`championImage://${id}.png`} alt={champ.name} />
                 </div>
                 <p className={Styles.ChampName}>{champ.name}</p>
+                {num && <p className={Styles.ChampIndex}> {num} </p>}
                 <Button
                     className={Styles.Delete}
                     onClick={() => onDelete(champ.id)}

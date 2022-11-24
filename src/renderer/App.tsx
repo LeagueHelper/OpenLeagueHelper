@@ -1,5 +1,5 @@
+import './App.scss';
 import { useEffect } from 'react';
-import './App.css';
 
 import { HashRouter, Route, Routes } from 'react-router-dom';
 

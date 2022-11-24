@@ -1,4 +1,4 @@
-import { Button, Card, MenuItem } from '@blueprintjs/core';
+import { Button, Card, Icon, MenuItem } from '@blueprintjs/core';
 import { ItemPredicate, ItemRenderer, Select } from '@blueprintjs/select';
 import Champion from 'api/entities/Champion';
 import { useAppDispatch } from 'renderer/state/hooks';
@@ -6,11 +6,16 @@ import { useAppDispatch } from 'renderer/state/hooks';
 export interface SelectCardProps {
     availableChampions: Champion[] | any;
     addChampion: (champ: Champion) => void;
+    text: string;
 }
 
 const ChampSelect = Select.ofType<Champion>();
 
-const SelectCard = ({ availableChampions, addChampion }: SelectCardProps) => {
+const AddChamp = ({
+    availableChampions,
+    addChampion,
+    text,
+}: SelectCardProps) => {
     const dispatch = useAppDispatch();
     const renderChamp: ItemRenderer<Champion> = (
         champ,
@@ -35,17 +40,18 @@ const SelectCard = ({ availableChampions, addChampion }: SelectCardProps) => {
     };
 
     return (
-        <Card>
-            <ChampSelect
-                itemPredicate={filterChamp}
-                items={availableChampions}
-                itemRenderer={renderChamp}
-                onItemSelect={addChampion}
-            >
-                <Button>Select Champ</Button>
-            </ChampSelect>
-        </Card>
+        <ChampSelect
+            itemPredicate={filterChamp}
+            items={availableChampions}
+            itemRenderer={renderChamp}
+            onItemSelect={addChampion}
+            inputProps={{
+                placeholder: text,
+            }}
+        >
+            <Button icon={<Icon size={24} icon="plus" />} />
+        </ChampSelect>
     );
 };
 
-export default SelectCard;
+export default AddChamp;

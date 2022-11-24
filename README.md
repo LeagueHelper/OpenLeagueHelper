@@ -23,5 +23,9 @@ REMEMBER TO ADD CERTIFICATE INSIDE LEAGUE-CONNECT MODULE
 BY HAND, I MEAN HARDCODING IT AS IN authentication.js (LEAGUECONNECT MODED FILE)
 
 # Authors
+
 Renzo Beux
+
+<a href="https://www.buymeacoffee.com/renzobeux" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+
 Agustin Tornaría

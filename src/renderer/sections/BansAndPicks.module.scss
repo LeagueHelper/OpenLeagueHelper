@@ -1,0 +1,33 @@
+@import '../scss/colors.scss';
+
+.roleButton {
+    margin: 10px;
+    transition: all 0.2s ease-in-out;
+    > span {
+        color: $pink;
+    }
+    &:hover {
+        background-color: aqua;
+    }
+    &.activeRole {
+        background-color: $gray-accent;
+        border: 2px solid $gray-accent;
+        border-radius: 4px;
+        color: white;
+        transform: scale(1.5);
+        transition: all 0.2s ease-in-out;
+        font-weight: 500;
+        margin-left: 25px;
+        margin-right: 25px;
+    }
+}
+
+.roleButtonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.AppContainer {
+    margin-top: 45px;
+}

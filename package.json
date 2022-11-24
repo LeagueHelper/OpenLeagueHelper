@@ -91,6 +91,7 @@
         "@testing-library/user-event": "^13.5.0",
         "btoa": "^1.2.1",
         "chokidar": "^3.3.1",
+        "classnames": "^2.3.2",
         "cross-env": "^7.0.3",
         "dateformat": "^3.0.3",
         "easy-auto-launch": "^6.0.2",

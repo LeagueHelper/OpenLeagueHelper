@@ -23,7 +23,11 @@ const Modal = ({ isOpen, toggle, title, content, footer }: ModalProps) => {
             >
                 <div className={Styles.modalHeader}>
                     <h3>{title}</h3>
-                    <Button icon="cross" onClick={toggle} />
+                    <Button
+                        className={Styles.modalCloseButton}
+                        icon="cross"
+                        onClick={toggle}
+                    />
                 </div>
                 <div className={Styles.modalBody}>{content}</div>
                 <div className={Styles.modalFooter}>{footer}</div>

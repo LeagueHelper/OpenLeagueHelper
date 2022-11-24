@@ -15,6 +15,7 @@ export interface DragAndDropListProps {
         style: Record<string, any>;
         element: any;
         id: number | string;
+        listIndex: number | undefined;
     }>;
 }
 
@@ -54,6 +55,7 @@ const DragAndDropList = (props: DragAndDropListProps) => {
 
     const getListStyle = (isDraggingOver: boolean) => ({
         background: isDraggingOver ? 'lightblue' : 'lightgrey',
+        padding: 8,
     });
 
     const getItemStyle = (
@@ -64,7 +66,9 @@ const DragAndDropList = (props: DragAndDropListProps) => {
         transform: isDragging ? 'scale(1.2)' : undefined,
         ...draggableStyle,
     });
-
+    if (items.length === 0) {
+        return null;
+    }
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="droppable">
@@ -98,6 +102,7 @@ const DragAndDropList = (props: DragAndDropListProps) => {
                                                         itemToRender.content
                                                     }
                                                     onDelete={onDelete}
+                                                    listIndex={index}
                                                 />
                                             </div>
                                         )}

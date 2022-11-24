@@ -1,0 +1,74 @@
+// import colors
+@import './scss/colors';
+
+*:focus {
+    outline: none;
+}
+
+.BansAndPicks {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.desktop {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(31, 31, 31);
+    height: 100vh;
+    font-size: 26px;
+}
+
+.switch {
+    margin: 10px;
+}
+
+.desktop-switches {
+    position: fixed;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: right;
+    color: white;
+    font-size: 26px;
+    padding: 10px;
+}
+
+.roleSetter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+body {
+    background-color: $gray;
+    color: white;
+}
+
+.bp4-button {
+    background-color: $gray;
+    &:not([class*='bp4-intent-']) {
+        background-color: unset;
+        &:hover {
+            background-color: $gray-accent;
+            > span {
+                color: $gold;
+            }
+        }
+    }
+    span {
+        color: $light-gray;
+    }
+    &:hover {
+        background-color: $gray-accent;
+        > span {
+            color: $gold;
+        }
+    }
+}

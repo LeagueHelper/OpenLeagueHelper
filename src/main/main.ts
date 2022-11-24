@@ -60,6 +60,7 @@ import Role from '../api/entities/Role';
 
 const gotTheLock = app.requestSingleInstanceLock();
 let tray: Tray | null = null;
+let isQuitting = false;
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -361,6 +362,7 @@ function createTray(icon: string) {
         {
             label: 'Exit',
             click() {
+                isQuitting = true;
                 app.quit();
             },
         },
@@ -408,6 +410,7 @@ const createWindow = async () => {
         if (!mainWindow) {
             throw new Error('"mainWindow" is not defined');
         }
+        tray = createTray(getAssetPath('icon.png'));
 
         // I want to show the windows before connection to league of legends is done
         // thats why the following code block is after this one
@@ -419,15 +422,15 @@ const createWindow = async () => {
         await startLoLApi();
     });
 
-    mainWindow.on('minimize', (event: Event) => {
-        event.preventDefault();
-        mainWindow?.hide();
-        tray = createTray(getAssetPath('icon.png'));
+    app.on('before-quit', () => {
+        isQuitting = true;
     });
 
-    mainWindow.on('restore', () => {
-        mainWindow?.show();
-        tray?.destroy();
+    mainWindow.on('close', (event: Event) => {
+        if (!isQuitting) {
+            event.preventDefault();
+            mainWindow?.hide();
+        }
     });
 
     mainWindow.on('closed', () => {
