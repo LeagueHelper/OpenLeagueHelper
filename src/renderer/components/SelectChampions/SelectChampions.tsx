@@ -29,6 +29,16 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
 
     const [auxState, setAuxState] = useState<ItemToRender[]>([]);
 
+    function setChampions(champs: ItemToRender[]) {
+        const toSave = {
+            ...autopickPreferences,
+            [role]: {
+                ...autopickPreferences[role],
+                [useCase]: champs.map((champ) => parseInt(champ.id, 10)),
+            },
+        };
+        dispatch(setAutopickPreferences(toSave));
+    }
     // save an item
     const addChampion = (item: Champion) => {
         const aux = Array.from(auxState);
@@ -40,28 +50,14 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
             content: item,
         });
         setAuxState(aux);
-        const toSave = {
-            ...autopickPreferences,
-            [role]: {
-                ...autopickPreferences[role],
-                [useCase]: aux.map((champ) => parseInt(champ.id, 10)),
-            },
-        };
-        dispatch(setAutopickPreferences(toSave));
+        setChampions(aux);
     };
 
     function deleteChampion(id: number) {
         let aux = auxState;
         aux = aux.filter((champId) => champId.id !== id.toString());
         setAuxState(aux);
-        const toSave = {
-            ...autopickPreferences,
-            [role]: {
-                ...autopickPreferences[role],
-                [useCase]: aux.map((champ) => parseInt(champ.id, 10)),
-            },
-        };
-        dispatch(setAutopickPreferences(toSave));
+        setChampions(aux);
     }
 
     useEffect(() => {
@@ -88,7 +84,10 @@ const SelectChampions = (props: SelectChampionsPropTypes) => {
                 <DragAndDropList
                     items={auxState}
                     Component={ChampCard}
-                    setItems={setAuxState}
+                    setItems={(items) => {
+                        setAuxState(items);
+                        setChampions(items);
+                    }}
                     onDelete={deleteChampion}
                 />
             </div>

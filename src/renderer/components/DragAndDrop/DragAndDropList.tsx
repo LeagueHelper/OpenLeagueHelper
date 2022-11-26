@@ -5,6 +5,8 @@ import {
     Droppable,
     DropResult,
 } from 'react-beautiful-dnd';
+import Styles from './DragAndDropList.module.scss';
+import Colors from '../../scss/colors.module.scss';
 
 export interface DragAndDropListProps {
     onDelete: (id: number) => void;
@@ -54,7 +56,7 @@ const DragAndDropList = (props: DragAndDropListProps) => {
     }
 
     const getListStyle = (isDraggingOver: boolean) => ({
-        background: isDraggingOver ? 'lightblue' : 'lightgrey',
+        background: Colors.background,
         padding: 8,
     });
 
@@ -67,13 +69,18 @@ const DragAndDropList = (props: DragAndDropListProps) => {
         ...draggableStyle,
     });
     if (items.length === 0) {
-        return null;
+        return (
+            <>
+                <p>None yet!</p>
+            </>
+        );
     }
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="droppable">
                 {(provided, snapshot) => (
                     <div
+                        className={Styles.dropable}
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                         style={getListStyle(snapshot.isDraggingOver)}

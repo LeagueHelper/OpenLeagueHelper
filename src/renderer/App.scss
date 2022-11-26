@@ -1,14 +1,8 @@
-// import colors
-@import './scss/colors';
+// import scss/colors.module
+@import './scss/colors.module';
 
 *:focus {
     outline: none;
-}
-
-.BansAndPicks {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
 }
 
 .desktop {
@@ -71,4 +65,43 @@ body {
             color: $gold;
         }
     }
+}
+
+// body {
+//     height: 100%;
+//     box-sizing: border-box;
+// }
+
+// html {
+//     height: 100%;
+//     box-sizing: border-box;
+// }
+html,
+body {
+    min-height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+body {
+    height: 100vh;
+}
+
+#root {
+    height: 100%;
+}
+
+// set scrollbar style
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: $gray;
+}
+::-webkit-scrollbar-thumb {
+    background: $light-gray;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: $gray-accent;
 }

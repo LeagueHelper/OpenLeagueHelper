@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Button, Card, Icon, IconSize } from '@blueprintjs/core';
+import { Card, Icon, IconSize } from '@blueprintjs/core';
 import Champion from 'api/entities/Champion';
 import Styles from './ChampCard.module.scss';
+import Button from '../../UI/Button/Button';
 
 export interface ChampCardProps {
     style: Record<string, any>;
@@ -23,18 +24,17 @@ const ChampCard: React.FC<ChampCardProps> = (props: ChampCardProps) => {
                     <img src={`championImage://${id}.png`} alt={champ.name} />
                 </div>
                 <p className={Styles.ChampName}>{champ.name}</p>
-                {num && <p className={Styles.ChampIndex}> {num} </p>}
+                {num && <p className={Styles.ChampIndex}> {`#${num}`} </p>}
                 <Button
                     className={Styles.Delete}
                     onClick={() => onDelete(champ.id)}
-                    icon={
-                        <Icon
-                            className={Styles.trashIcon}
-                            icon="trash"
-                            iconSize={15}
-                        />
-                    }
-                />
+                >
+                    <Icon
+                        className={Styles.trashIcon}
+                        icon="trash"
+                        iconSize={15}
+                    />
+                </Button>
             </div>
         );
     }

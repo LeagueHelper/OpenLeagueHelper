@@ -239,7 +239,6 @@ async function getAndCacheImages(
 async function startLoLApi() {
     try {
         const credentials = await authenticate({ awaitConnection: true });
-        log.info(credentials);
         await sleep(5000);
         const client = new LeagueClient(credentials);
 
@@ -253,6 +252,7 @@ async function startLoLApi() {
         let summoner: Summoner;
         if (summonerReq.status === 200) {
             summoner = await summonerReq.json();
+            store.set(SUMMONER, summoner);
         } else {
             await sleep(1000);
             summoner = await getLolSummonerAsync(credentials);
@@ -419,6 +419,14 @@ const createWindow = async () => {
         } else {
             mainWindow.show();
         }
+        mainWindow?.webContents.send(SUMMONER, {
+            success: true,
+            summoner: await store.get(SUMMONER),
+        });
+        mainWindow?.webContents.send(RAWCHAPIONS, {
+            success: true,
+            champions: await store.get(RAWCHAPIONS),
+        });
         await startLoLApi();
     });
 

@@ -1,7 +1,5 @@
 import Role from 'api/entities/Role';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Divider } from '@blueprintjs/core';
-import Settings from 'renderer/components/Settings/Settings';
 import AppFrame from 'renderer/components/AppFrame/AppFrame';
 import { useState } from 'react';
 import cx from 'classnames';
@@ -68,7 +66,7 @@ const BansAndPicks = () => {
                     </Button>
                 </div>
 
-                <div className="BansAndPicks">
+                <div className={Styles.BansAndPicks}>
                     <SelectChampions
                         title="Picks"
                         role={role}

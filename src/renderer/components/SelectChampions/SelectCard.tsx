@@ -2,6 +2,7 @@ import { Button, Card, Icon, MenuItem } from '@blueprintjs/core';
 import { ItemPredicate, ItemRenderer, Select } from '@blueprintjs/select';
 import Champion from 'api/entities/Champion';
 import { useAppDispatch } from 'renderer/state/hooks';
+import Styles from './SelectCard.module.scss';
 
 export interface SelectCardProps {
     availableChampions: Champion[] | any;
@@ -41,12 +42,17 @@ const AddChamp = ({
 
     return (
         <ChampSelect
+            className={Styles.Select}
             itemPredicate={filterChamp}
             items={availableChampions}
             itemRenderer={renderChamp}
             onItemSelect={addChampion}
+            popoverProps={{
+                popoverClassName: 'popover',
+            }}
             inputProps={{
                 placeholder: text,
+                className: Styles.input,
             }}
         >
             <Button icon={<Icon size={24} icon="plus" />} />

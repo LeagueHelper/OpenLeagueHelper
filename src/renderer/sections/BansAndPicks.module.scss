@@ -1,4 +1,4 @@
-@import '../scss/colors.scss';
+@import '../scss/colors.module';
 
 .roleButton {
     margin: 10px;
@@ -29,5 +29,13 @@
 }
 
 .AppContainer {
-    margin-top: 45px;
+    padding: 45px 40px;
+    height: 100%;
+}
+
+.BansAndPicks {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 100%;
 }
