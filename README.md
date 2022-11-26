@@ -15,9 +15,9 @@ Open League Helper is a open source software built by a software programmer look
 
 -   None
 
-## Dev notes (do not worry if you are not compiling this)
+# Dev notes (do not worry if you are not compiling this)
 
-# IMPORTANT
+## IMPORTANT
 
 REMEMBER TO ADD CERTIFICATE INSIDE LEAGUE-CONNECT MODULE
 BY HAND, I MEAN HARDCODING IT AS IN authentication.js (LEAGUECONNECT MODED FILE)
