@@ -4,7 +4,7 @@
     "description": "A league of legends helper and automation tool",
     "license": "MIT",
     "author": {
-      "name": "Renzo Beux and Agustin Tornaria",
+      "name": "Renzo Beux",
       "email": "renzobeux@gmail.com"
   },
     "main": "./dist/main/main.js",

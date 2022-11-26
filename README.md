@@ -1,6 +1,6 @@
-# League Helper
+# Open League Helper
 
-League Helper is a software built by two software programmer looking to automate the accepting, banning and picking task in League of Legends.
+Open League Helper is a open source software built by a software programmer looking to automate the accepting, banning and picking task in League of Legends.
 
 > Hey i want to go to the restroom, but I don't want to waste time, I would like to start searching while on restroom, how wonderful would it be if....
 >
@@ -27,5 +27,3 @@ BY HAND, I MEAN HARDCODING IT AS IN authentication.js (LEAGUECONNECT MODED FILE)
 Renzo Beux
 
 <a href="https://www.buymeacoffee.com/renzobeux" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
-
-Agustin Tornaría

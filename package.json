@@ -2,7 +2,7 @@
     "description": "A league of legends helper and automation tool",
     "license": "MIT",
     "author": {
-        "name": "Renzo Beux and Agustin Tornaria",
+        "name": "Renzo Beux",
         "email": "renzobeux@gmail.com"
     },
     "main": "./src/main/main.ts",
@@ -12,7 +12,7 @@
         "build:renderer": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.prod.ts",
         "postinstall": "ts-node .erb/scripts/check-native-dep.js && electron-builder install-app-deps && cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.ts",
         "lint": "cross-env NODE_ENV=development eslint . --ext .js,.jsx,.ts,.tsx",
-        "package": "ts-node ./.erb/scripts/clean.js dist && npm run build && cross-env GH_TOKEN=<PUTTOKENHERE> electron-builder build --publish never",
+        "package": "ts-node ./.erb/scripts/clean.js dist && npm run build && cross-env GH_TOKEN=aaaaa electron-builder build --publish never",
         "prepare": "husky install",
         "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
         "start": "ts-node ./.erb/scripts/check-port-in-use.js && npm run start:renderer",
@@ -187,7 +187,7 @@
         "webpack-merge": "^5.8.0"
     },
     "build": {
-        "productName": "League Helper",
+        "productName": "Open League Helper",
         "appId": "LeagueHelper.openleaguehelper",
         "asar": true,
         "asarUnpack": "**\\*.{node,dll}",

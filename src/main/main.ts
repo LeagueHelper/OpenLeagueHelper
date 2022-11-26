@@ -368,10 +368,10 @@ function createTray(icon: string) {
         },
     ]);
 
-    appIcon.on('double-click', function (event) {
+    appIcon.on('click', function (event) {
         mainWindow?.show();
     });
-    appIcon.setToolTip('League Helper');
+    appIcon.setToolTip('Open League Helper');
     appIcon.setContextMenu(contextMenu);
     return appIcon;
 }
