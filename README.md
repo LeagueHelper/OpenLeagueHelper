@@ -1,5 +1,7 @@
 # Open League Helper
 
+## Only works for ranked games at the moment
+
 Open League Helper is a open source software built by a software programmer looking to automate the accepting, banning and picking task in League of Legends.
 
 > Hey i want to go to the restroom, but I don't want to waste time, I would like to start searching while on restroom, how wonderful would it be if....
