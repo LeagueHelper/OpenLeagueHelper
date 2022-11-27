@@ -26,10 +26,13 @@ import Store from 'electron-store';
 import unhandled from 'electron-unhandled';
 import {
     authenticate,
-    request,
-    connect,
     LeagueClient,
     Credentials,
+    createHttp1Request,
+    createHttp2Request,
+    createHttpSession,
+    createWebSocketConnection,
+    DEPRECATED_request,
 } from 'league-connect';
 import { FrontendMessage } from 'api/MessageTypes/FrontendMessage';
 import { RawChampion } from 'api/entities/RawChampion';
@@ -77,9 +80,27 @@ if (!gotTheLock) {
 }
 
 const streamPipeline = promisify(pipeline);
+
 const autoLauncher = new AutoLaunch({
-    name: 'LoL Auto Picker',
+    name: 'Open League Helper',
 });
+async function handleAutoStart(value: boolean) {
+    try {
+        if (app.isPackaged) {
+            if (value) {
+                await autoLauncher.enable();
+                log.info('Auto start enabled');
+            } else {
+                await autoLauncher.disable();
+                log.info('Auto start disabled');
+            }
+            const isEnabled = await autoLauncher.isEnabled();
+            log.info('enabled?:', String(isEnabled));
+        }
+    } catch (e) {
+        log.error('Error setting auto start', e);
+    }
+}
 
 const emptyAutopickPreferences: AutopickPreferences = {
     [Role.Top]: {
@@ -152,7 +173,7 @@ const installExtensions = async () => {
 async function getLolSummonerAsync(
     credentials: Credentials
 ): Promise<Summoner> {
-    const summonerReq = await request(
+    const summonerReq = await createHttp1Request(
         {
             method: 'GET',
             url: '/lol-summoner/v1/current-summoner',
@@ -172,7 +193,7 @@ async function getLolChampionsAsync(
     summoner: Summoner,
     credentials: Credentials
 ): Promise<RawChampion[]> {
-    const championsReq = await request(
+    const championsReq = await createHttp1Request(
         {
             method: 'GET',
             url: `/lol-champions/v1/inventories/${summoner.summonerId}/champions`,
@@ -214,7 +235,7 @@ async function getAndCacheImages(
                 )
             )
         ) {
-            const imageReq = await request(
+            const imageReq = await DEPRECATED_request(
                 {
                     method: 'GET',
 
@@ -239,10 +260,11 @@ async function getAndCacheImages(
 async function startLoLApi() {
     try {
         const credentials = await authenticate({ awaitConnection: true });
+        console.log(credentials);
         await sleep(5000);
         const client = new LeagueClient(credentials);
 
-        const summonerReq = await request(
+        const summonerReq = await createHttp1Request(
             {
                 method: 'GET',
                 url: '/lol-summoner/v1/current-summoner',
@@ -258,7 +280,7 @@ async function startLoLApi() {
             summoner = await getLolSummonerAsync(credentials);
         }
 
-        const championsReq = await request(
+        const championsReq = await createHttp1Request(
             {
                 method: 'GET',
                 url: `/lol-champions/v1/inventories/${summoner.summonerId}/champions`,
@@ -311,7 +333,10 @@ async function startLoLApi() {
         mainWindow?.webContents.send(SUMMONER, summonerSend);
         mainWindow?.webContents.send(RAWCHAPIONS, championsSend);
 
-        const ws = await connect(credentials);
+        const ws = await createWebSocketConnection({
+            authenticationOptions: {},
+            pollInterval: 1000,
+        });
 
         ws.on('message', (message) => {
             if (typeof message === 'string') {
@@ -325,12 +350,12 @@ async function startLoLApi() {
             // We need to update the API with the new credentials
             API.setCredentials(newCredentials);
             mainWindow?.webContents.send('connect', {});
-            log.info('RECONECTADOOO');
+            log.info('LOL Client connected');
         });
 
         client.on('disconnect', () => {
             mainWindow?.webContents.send('disconnect', {});
-            log.info('disconnected');
+            log.info('LOL Client disconnected');
         });
 
         client.start(); // Start listening for process updates
@@ -615,16 +640,9 @@ ipcMain.on('electron-store-clear', async () => {
 });
 
 ipcMain.on(SET_AUTO_START, async (_event, val) => {
-    if (app.isPackaged) {
-        if (val) {
-            autoLauncher.enable();
-            log.info('Auto start enabled');
-        } else {
-            autoLauncher.disable();
-            log.info('Auto start disabled');
-        }
-    }
+    handleAutoStart(val);
 });
+
 ipcMain.on(GET_AUTO_START, async (_event) => {
     const autoStart = await autoLauncher.isEnabled();
     log.info('------------------------------>', autoStart);

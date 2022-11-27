@@ -25,6 +25,9 @@ contextBridge.exposeInMainWorld('electron', {
         close() {
             ipcRenderer.send('app-close');
         },
+        setAutoStart(val: boolean) {
+            ipcRenderer.send('app-set-auto-start', val);
+        },
     },
     ipcRenderer: {
         sendMessage(channel: Channels, args: unknown[]) {

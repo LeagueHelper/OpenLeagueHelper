@@ -8,6 +8,6 @@ module.exports = {
     AUTOACCEPT_STATE: 'autoaccept-state',
     RAWCHAPIONS: 'raw-champions',
     SUMMONER: 'summoner-data',
-    SET_AUTO_START: 'set-auto-start',
+    SET_AUTO_START: 'app-set-auto-start',
     GET_AUTO_START: 'get-auto-start',
 };

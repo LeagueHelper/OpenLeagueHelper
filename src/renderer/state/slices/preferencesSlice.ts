@@ -76,9 +76,8 @@ const reducer = {
         state: PreferencesState,
         action: PayloadAction<boolean>
     ) => {
-        console.log(action.payload);
         state.autoStartOnWindowsStartup = action.payload;
-        window.electron.store.set(SET_AUTO_START, action.payload);
+        window.electron.app.setAutoStart(action.payload);
     },
 };
 export const preferencesSlice = createSlice({

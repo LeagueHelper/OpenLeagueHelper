@@ -103,7 +103,7 @@
         "electron-updater": "^5.2.1",
         "fs": "^0.0.1-security",
         "fs-extra": "^8.1.0",
-        "league-connect": "^5.5.0-rc1",
+        "league-connect": "^6.0.0-rc8",
         "node-fetch": "^2.6.0",
         "path": "^0.12.7",
         "react": "^18.1.0",
@@ -194,6 +194,7 @@
         "files": [
             "dist",
             "node_modules",
+            "node_modules/**/*",
             "package.json"
         ],
         "afterSign": ".erb/scripts/notarize.js",

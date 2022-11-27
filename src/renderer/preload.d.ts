@@ -13,6 +13,7 @@ declare global {
                 minimize: () => void;
                 maximize: () => void;
                 close: () => void;
+                setAutoStart: (val: boolean) => void;
             };
             ipcRenderer: {
                 sendMessage(channel: Channels, args: unknown[]): void;
