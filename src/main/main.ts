@@ -339,9 +339,7 @@ async function startLoLApi() {
         });
 
         ws.on('message', (message) => {
-            if (typeof message === 'string') {
-                API.handleWebSocket(message);
-            }
+            API.handleWebSocket(message.toString());
         });
 
         client.on('connect', (newCredentials) => {

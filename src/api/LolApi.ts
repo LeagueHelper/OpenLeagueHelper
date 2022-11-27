@@ -1,4 +1,4 @@
-import { request, Credentials } from 'league-connect';
+import { Credentials, createHttp1Request } from 'league-connect';
 import Role from './entities/Role';
 import { Cell, Type } from './entities/Cell';
 import { GameSession } from './GameSession';
@@ -11,7 +11,7 @@ import Champion from './entities/Champion';
 import { AutopickPreferences } from './entities/AutopickPreferences';
 
 class LoLApi {
-    private credentials: Credentials | undefined;
+    private credentials: Credentials;
 
     private allChampions: RawChampion[];
 
@@ -75,7 +75,7 @@ class LoLApi {
         );
         if (pickIntentAction === null) return;
         setTimeout(() => {
-            request(
+            createHttp1Request(
                 {
                     method: 'PATCH',
                     url: `/lol-champ-select/v1/session/actions/${pickIntentAction?.id}`,
@@ -90,7 +90,7 @@ class LoLApi {
 
     private doPatch(action: Cell) {
         setTimeout(() => {
-            request(
+            createHttp1Request(
                 {
                     method: 'PATCH',
                     url: `/lol-champ-select/v1/session/actions/${action.id}`,
@@ -218,7 +218,7 @@ class LoLApi {
                         // if it is in progress and the player has not responded yet
                         // accepts the game
                         setTimeout(() => {
-                            request(
+                            createHttp1Request(
                                 {
                                     method: 'POST',
                                     url: '/lol-matchmaking/v1/ready-check/accept',
