@@ -1,4 +1,5 @@
 import { Credentials, createHttp1Request } from 'league-connect';
+import log from 'electron-log';
 import Role from './entities/Role';
 import { Cell, Type } from './entities/Cell';
 import { GameSession } from './GameSession';
@@ -102,17 +103,18 @@ class LoLApi {
     }
 
     private handleBan(action: Cell) {
-        console.log('handleBan');
         action.championId = this.findBan();
         action.completed = true;
         // TODO: wait for last seconds before finishing the action to let user override it
         this.doPatch(action);
+        log.info(`Banned ${action.championId}`);
     }
 
     private handlePick(action: Cell) {
         action.championId = this.findPick();
         action.completed = true;
         this.doPatch(action);
+        log.info(`Picked ${action.championId}`);
     }
 
     private async sendUpdate() {
@@ -210,11 +212,13 @@ class LoLApi {
             if (js.uri.includes('/lol-matchmaking/v1/ready-check')) {
                 const readyData: ReadyCheckData = js.data;
                 if (readyData === null) return;
+                log.info('Match found');
                 if (this.autoAcceptIsTurnedOn) {
                     if (
                         readyData.state === 'InProgress' &&
                         readyData.playerResponse === 'None'
                     ) {
+                        log.info('Accepting match');
                         // if it is in progress and the player has not responded yet
                         // accepts the game
                         setTimeout(() => {
@@ -227,6 +231,10 @@ class LoLApi {
                             );
                         }, 100);
                     }
+                } else {
+                    log.info(
+                        'Not accepting match because user disabled this feature'
+                    );
                 }
             }
 
@@ -259,7 +267,6 @@ class LoLApi {
 
                 // Execute this code only if autopick is turned on
                 if (this.autoPickIsTurnedOn) {
-                    console.log('Autopick is turned on');
                     // We want this code to be here, before returning is action is null
                     // because on planning phase no one is in progress
                     // PLANNING PHASE
@@ -273,28 +280,26 @@ class LoLApi {
                     // TODO: Change this to use gameSession info
                     switch (action.type) {
                         case Type.ban:
-                            console.log('Banning');
                             this.handleBan(action);
                             break;
                         case Type.pick:
-                            console.log('Picking');
                             this.handlePick(action);
                             break;
                         default:
                             break;
                     }
-                    console.log('---------------------------------------');
-                    console.log(
-                        'BANNED!!!',
-                        this.gameSession.getBannedChampions()
-                    );
-                    console.log(
-                        'PICKED!!!',
-                        this.gameSession.getPickedChampions()
-                    );
-                    console.log('ROLE!!!', this.gameSession.getRole());
-                    console.log('PHASE!!!', this.gameSession.getPhase());
-                    console.log('---------------------------------------');
+                    // console.log('---------------------------------------');
+                    // console.log(
+                    //     'BANNED!!!',
+                    //     this.gameSession.getBannedChampions()
+                    // );
+                    // console.log(
+                    //     'PICKED!!!',
+                    //     this.gameSession.getPickedChampions()
+                    // );
+                    // console.log('ROLE!!!', this.gameSession.getRole());
+                    // console.log('PHASE!!!', this.gameSession.getPhase());
+                    // console.log('---------------------------------------');
                 }
 
                 // SEND DATA TO FRONTEND
@@ -302,7 +307,7 @@ class LoLApi {
                 // end if turned on
             }
         } catch (e) {
-            console.error(e);
+            log.error(e);
         }
     }
 
