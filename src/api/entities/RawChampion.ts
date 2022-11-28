@@ -27,7 +27,6 @@ export type RawChampion = {
     purchased: number;
     rankedPlayEnabled: boolean;
     roles: string[];
-    skins: [];
     spells: {
         description: string;
         name: string;

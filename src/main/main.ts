@@ -206,7 +206,11 @@ async function getLolChampionsAsync(
         const res = await getLolChampionsAsync(summoner, credentials);
         return res;
     }
-    return (await championsReq.json()) as RawChampion[];
+    const aux = (await championsReq.json()) as Record<string, any>[];
+    for (const champion of aux) {
+        delete champion.skins;
+    }
+    return aux as RawChampion[];
 }
 
 async function mkdirp(dir: string) {
@@ -279,23 +283,12 @@ async function startLoLApi() {
             await sleep(1000);
             summoner = await getLolSummonerAsync(credentials);
         }
-
-        const championsReq = await createHttp1Request(
-            {
-                method: 'GET',
-                url: `/lol-champions/v1/inventories/${summoner.summonerId}/champions`,
-            },
-            credentials
-        );
+        // Manage champions
         let champions: RawChampion[] = ((await store.get(RAWCHAPIONS)) ||
             []) as RawChampion[];
-        if (championsReq.status === 200) {
-            champions = await championsReq.json();
-            store.set(RAWCHAPIONS, champions);
-        } else {
-            await sleep(10000);
-            champions = await getLolChampionsAsync(summoner, credentials);
-        }
+        champions = await getLolChampionsAsync(summoner, credentials);
+        store.set(RAWCHAPIONS, champions);
+
         getAndCacheImages(credentials, champions);
         const autopickPreferences: AutopickPreferences =
             ((await store.get(AUTOPICK_PREFERENCES)) as AutopickPreferences) ||
