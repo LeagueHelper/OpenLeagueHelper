@@ -8,6 +8,7 @@ module.exports = {
         'react/react-in-jsx-scope': 'off',
         'react/jsx-no-bind': 'off',
         indent: ['error', 4, { SwitchCase: 1 }],
+        'pretier/prettier': 'off',
     },
     parserOptions: {
         ecmaVersion: 2020,

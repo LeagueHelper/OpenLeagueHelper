@@ -1,7 +1,8 @@
 {
-  "rules": {
-    "no-console": "off",
-    "global-require": "off",
-    "import/no-dynamic-require": "off"
-  }
+    "rules": {
+        "prettier/prettier": "off",
+        "no-console": "off",
+        "global-require": "off",
+        "import/no-dynamic-require": "off"
+    }
 }
