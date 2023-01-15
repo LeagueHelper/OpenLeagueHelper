@@ -10,6 +10,7 @@ declare global {
                 // any other methods you've defined...
             };
             app: {
+                getVersion: () => string;
                 minimize: () => void;
                 maximize: () => void;
                 close: () => void;

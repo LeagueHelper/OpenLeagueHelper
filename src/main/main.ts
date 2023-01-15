@@ -83,6 +83,7 @@ const streamPipeline = promisify(pipeline);
 
 const autoLauncher = new AutoLaunch({
     name: 'Open League Helper',
+    isHidden: true,
 });
 async function handleAutoStart(value: boolean) {
     try {
@@ -196,7 +197,7 @@ async function getLolChampionsAsync(
     const championsReq = await createHttp1Request(
         {
             method: 'GET',
-            url: `/lol-champions/v1/inventories/${summoner.summonerId}/champions`,
+            url: `/lol-champions/v1/owned-champions-minimal`,
         },
         credentials
     );
@@ -649,4 +650,8 @@ ipcMain.on('app-maximize', () => {
 });
 ipcMain.on('app-close', () => {
     mainWindow?.close();
+});
+
+ipcMain.on('app-get-version', (event, args) => {
+    event.returnValue = app.getVersion();
 });

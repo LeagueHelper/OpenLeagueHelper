@@ -3,6 +3,7 @@ import { Divider } from '@blueprintjs/core';
 import AppFrame from 'renderer/components/AppFrame/AppFrame';
 import { useState } from 'react';
 import cx from 'classnames';
+import AppFooter from '../components/AppFooter/AppFooter';
 import SelectChampions from '../components/SelectChampions/SelectChampions';
 import Styles from './BansAndPicks.module.scss';
 import Button from '../UI/Button/Button';
@@ -76,6 +77,7 @@ const BansAndPicks = () => {
                     <SelectChampions title="Bans" role={role} useCase="bans" />
                 </div>
             </div>
+            <AppFooter />
         </>
     );
 };

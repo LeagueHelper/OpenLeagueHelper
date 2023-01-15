@@ -16,6 +16,9 @@ contextBridge.exposeInMainWorld('electron', {
         // Other method you want to add like has(), reset(), etc.
     },
     app: {
+        getVersion() {
+            return ipcRenderer.sendSync('app-get-version');
+        },
         minimize() {
             ipcRenderer.send('app-minimize');
         },
