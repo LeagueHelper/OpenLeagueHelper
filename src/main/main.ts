@@ -336,13 +336,13 @@ async function startLoLApi() {
             API.handleWebSocket(message.toString());
         });
 
-        client.on('connect', (newCredentials) => {
+        client.on('connect', (newCredentials: Credentials) => {
             // newCredentials: Each time the Client is started, new credentials are made
             // this variable contains the new credentials.
             // We need to update the API with the new credentials
             API.setCredentials(newCredentials);
             mainWindow?.webContents.send('connect', {});
-            log.info('LOL Client connected');
+            log.info('LOL Client connected, credentials updated');
         });
 
         client.on('disconnect', () => {
