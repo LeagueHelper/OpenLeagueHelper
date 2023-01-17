@@ -82,4 +82,4 @@ function checkForUpdates(menuItem, focusedWindow, event) {
     updater.enabled = false;
     autoUpdater.checkForUpdates();
 }
-module.exports.checkForUpdates = checkForUpdates;
+export default checkForUpdates;
